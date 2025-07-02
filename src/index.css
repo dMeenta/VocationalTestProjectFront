@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.form-input {
+  @apply appearance-none w-full rounded-2xl border border-indigo-800 pr-10 pl-3 py-2;
+}

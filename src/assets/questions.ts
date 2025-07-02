@@ -1,0 +1,63 @@
+const questions = [
+  { code: "R1", text: "Test the quality of parts before shipment" },
+  { code: "R2", text: "Lay brick or tile" },
+  { code: "R3", text: "Work on an offshore oil-drilling rig" },
+  { code: "R4", text: "Assemble electronic parts" },
+  { code: "R5", text: "Operate a grinding machine in a factory" },
+  { code: "R6", text: "Fix a broken faucet" },
+  { code: "R7", text: "Assemble products in a factory" },
+  { code: "R8", text: "Install flooring in houses" },
+
+  { code: "I1", text: "Study the structure of the human body" },
+  { code: "I2", text: "Study animal behavior" },
+  { code: "I3", text: "Do research on plants or animals" },
+  { code: "I4", text: "Develop a new medical treatment or procedure" },
+  { code: "I5", text: "Conduct biological research" },
+  { code: "I6", text: "Study whales and other types of marine life" },
+  { code: "I7", text: "Work in a biology lab" },
+  { code: "I8", text: "Make a map of the bottom of an ocean" },
+
+  { code: "A1", text: "Conduct a musical choir" },
+  { code: "A2", text: "Direct a play" },
+  { code: "A3", text: "Design artwork for magazines" },
+  { code: "A4", text: "Write a song" },
+  { code: "A5", text: "Write books or plays" },
+  { code: "A6", text: "Play a musical instrument" },
+  { code: "A7", text: "Perform stunts for a movie or television show" },
+  { code: "A8", text: "Design sets for plays" },
+
+  { code: "S1", text: "Give career guidance to people" },
+  { code: "S2", text: "Do volunteer work at a non-profit organization" },
+  {
+    code: "S3",
+    text: "Help people who have problems with drugs or alcohol",
+  },
+  { code: "S4", text: "Teach an individual an exercise routine" },
+  { code: "S5", text: "Help people with family-related problems" },
+  { code: "S6", text: "Supervise the activities of children at a camp" },
+  { code: "S7", text: "Teach children how to read" },
+  { code: "S8", text: "Help elderly people with their daily activities" },
+
+  { code: "E1", text: "Sell restaurant franchises to individuals" },
+  { code: "E2", text: "Sell merchandise at a department store" },
+  { code: "E3", text: "Manage the operations of a hotel" },
+  { code: "E4", text: "Operate a beauty salon or barber shop" },
+  { code: "E5", text: "Manage a department within a large company" },
+  { code: "E6", text: "Manage a clothing store" },
+  { code: "E7", text: "Sell houses" },
+  { code: "E8", text: "Run a toy store" },
+
+  { code: "C1", text: "Generate the monthly payroll checks for an office" },
+  { code: "C2", text: "Inventory supplies using a hand-held computer" },
+  { code: "C3", text: "Use a computer program to generate customer bills" },
+  { code: "C4", text: "Maintain employee records" },
+  {
+    code: "C5",
+    text: "Compute and record statistical and other numerical data",
+  },
+  { code: "C6", text: "Operate a calculator" },
+  { code: "C7", text: "Handle customers' bank transactions" },
+  { code: "C8", text: "Keep shipping and receiving records" },
+];
+
+export default questions;
