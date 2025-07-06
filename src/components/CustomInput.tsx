@@ -19,7 +19,7 @@ export default function CustomInput({
 
   return (
     <div className="mb-3">
-      <div className="flex justify-between gap-2 text-center">
+      <div className="flex justify-between gap-8 text-center w-full max-w-[700px] mx-auto">
         {options.map((option) => (
           <label
             key={option.value}
