@@ -48,7 +48,10 @@ export default function QuestionStep({
           },
         };
 
-        const res = await axios.post<BackendResponse>(apiUrl, payload);
+        const res = await axios.post<BackendResponse>(
+          apiUrl + "/predict",
+          payload
+        );
         onComplete(res.data);
       } catch (err) {
         alert("Error al enviar las respuestas");
