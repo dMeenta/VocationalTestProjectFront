@@ -28,6 +28,8 @@ export default function QuestionStep({
   };
 
   const handleNext = async () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     if (!selectedValue) return;
 
     const nextIndex = currentIndex + 1;
@@ -46,10 +48,7 @@ export default function QuestionStep({
           },
         };
 
-        const res = await axios.post<BackendResponse>(
-          "http://localhost:8000/predict",
-          payload
-        );
+        const res = await axios.post<BackendResponse>(apiUrl, payload);
         onComplete(res.data);
       } catch (err) {
         alert("Error al enviar las respuestas");

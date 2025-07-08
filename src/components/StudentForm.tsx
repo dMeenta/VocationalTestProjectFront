@@ -1,6 +1,4 @@
 import { useState } from "react";
-import ResultsModal from "./ResultsModal";
-import ResultDisplay from "./ResultDisplay";
 
 interface Props {
   onNext: (data: {
