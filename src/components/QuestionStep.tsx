@@ -2,14 +2,20 @@ import { useState } from "react";
 import questions from "../assets/questions";
 import CustomInput from "./CustomInput";
 import axios from "axios";
-import type { BackendResponse } from "./TestForm";
+import type { StudentData } from "../App";
+import type BackendResponse from "../assets/BackendResponse";
 
 interface Props {
   onComplete: (result: BackendResponse) => void;
   onRestart: () => void;
+  studentData: StudentData;
 }
 
-export default function QuestionStep({ onComplete, onRestart }: Props) {
+export default function QuestionStep({
+  onComplete,
+  onRestart,
+  studentData,
+}: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
@@ -30,9 +36,19 @@ export default function QuestionStep({ onComplete, onRestart }: Props) {
     } else {
       setLoading(true);
       try {
+        const payload = {
+          name: studentData.name,
+          last_name: studentData.lastName,
+          user_test_answers: {
+            ...answers,
+            age: studentData.age, // si tienes esta propiedad
+            gender: studentData.gender, // lo mismo aquí
+          },
+        };
+
         const res = await axios.post<BackendResponse>(
           "http://localhost:8000/predict",
-          { answers }
+          payload
         );
         onComplete(res.data);
       } catch (err) {
@@ -87,7 +103,9 @@ export default function QuestionStep({ onComplete, onRestart }: Props) {
           onClick={handleNext}
           disabled={!selectedValue || loading}
           className={`px-4 py-2 font-bold text-white rounded ${
-            selectedValue ? "bg-violet-700 hover:bg-violet-800" : "bg-gray-400 cursor-not-allowed"
+            selectedValue
+              ? "bg-violet-700 hover:bg-violet-800"
+              : "bg-gray-400 cursor-not-allowed"
           }`}
         >
           {loading
