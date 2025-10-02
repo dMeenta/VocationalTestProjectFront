@@ -2,8 +2,8 @@ import { useState } from "react";
 import questions from "../assets/questions";
 import CustomInput from "./CustomInput";
 import axios from "axios";
-import type { StudentData } from "../App";
 import type BackendResponse from "../assets/BackendResponse";
+import type { StudentData } from "../types/interfaces";
 
 interface Props {
   onComplete: (result: BackendResponse) => void;
@@ -16,24 +16,32 @@ export default function QuestionStep({
   onRestart,
   studentData,
 }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0); // índice del bloque
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
 
-  const currentQuestion = questions[currentIndex];
-  const selectedValue = answers[currentQuestion.code] ?? 0;
+  const QUESTIONS_PER_PAGE = 6;
+  const startIndex = currentIndex * QUESTIONS_PER_PAGE;
+  const currentQuestions = questions.slice(
+    startIndex,
+    startIndex + QUESTIONS_PER_PAGE
+  );
 
-  const handleChange = (val: number) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestion.code]: val }));
+  const handleChange = (code: string, val: number) => {
+    setAnswers((prev) => ({ ...prev, [code]: val }));
   };
 
   const handleNext = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    if (!selectedValue) return;
+    // validar que todas las preguntas de la página estén contestadas
+    const allAnswered = currentQuestions.every((q) => answers[q.code]);
+    if (!allAnswered) return;
 
     const nextIndex = currentIndex + 1;
-    if (nextIndex < questions.length) {
+    const reachedEnd = nextIndex * QUESTIONS_PER_PAGE >= questions.length;
+
+    if (!reachedEnd) {
       setCurrentIndex(nextIndex);
     } else {
       setLoading(true);
@@ -43,8 +51,8 @@ export default function QuestionStep({
           last_name: studentData.lastName,
           user_test_answers: {
             ...answers,
-            age: studentData.age, // si tienes esta propiedad
-            gender: studentData.gender, // lo mismo aquí
+            age: studentData.age,
+            gender: studentData.gender,
           },
         };
 
@@ -69,11 +77,8 @@ export default function QuestionStep({
   };
 
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-4xl">
+    <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-center w-full">
-          Pregunta {currentIndex + 1} de {questions.length}
-        </h2>
         <button
           onClick={onRestart}
           className="text-sm text-violet-700 font-semibold underline hover:text-violet-900 absolute top-4 right-6"
@@ -82,37 +87,39 @@ export default function QuestionStep({
         </button>
       </div>
 
-      <div className="mb-6">
-        <p className="font-medium mb-6">{currentQuestion.text}</p>
-        <CustomInput
-          name={currentQuestion.code}
-          value={selectedValue}
-          onChange={handleChange}
-        />
+      {/* Renderizar las 6 preguntas */}
+      <div className="bg-amber-200 px-10 py-6 rounded-4xl mb-2">
+        {currentQuestions.map((q) => (
+          <div key={q.code} className="mb-4">
+            <h5 className="font-medium mb-2 text-center">{q.text}</h5>
+            <CustomInput
+              name={q.code}
+              value={answers[q.code] ?? 0}
+              onChange={(val) => handleChange(q.code, val)}
+            />
+          </div>
+        ))}
       </div>
 
-      <div className="flex flex-wrap gap-4 mt-6 justify-end">
-        {currentIndex > 0 && (
-          <button
-            onClick={handleBack}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded font-semibold"
-          >
-            Anterior
-          </button>
-        )}
+      <div className="flex justify-between">
+        <button
+          onClick={handleBack}
+          disabled={loading || currentIndex < 1}
+          className="px-3 py-2 font-semibold rounded-full disabled:opacity-75 bg-gray-400 not-disabled:hover:bg-gray-500 not-disabled:cursor-pointer not-disabled:text-white"
+        >
+          Anterior
+        </button>
 
         <button
           onClick={handleNext}
-          disabled={!selectedValue || loading}
-          className={`px-4 py-2 font-bold text-white rounded ${
-            selectedValue
-              ? "bg-violet-700 hover:bg-violet-800"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
+          disabled={
+            loading || !currentQuestions.every((q) => answers[q.code]) // deshabilitado si faltan respuestas
+          }
+          className="px-3 py-2 font-semibold text-white rounded-full not-disabled:bg-violet-700 not-disabled:hover:bg-violet-900 not-disabled:cursor-pointer disabled:opacity-75 bg-gray-400 cursor-not-allowed"
         >
           {loading
             ? "Enviando..."
-            : currentIndex === questions.length - 1
+            : startIndex + QUESTIONS_PER_PAGE >= questions.length
             ? "Finalizar"
             : "Siguiente"}
         </button>

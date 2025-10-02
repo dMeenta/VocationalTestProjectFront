@@ -33,7 +33,7 @@ export default function CustomInput({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 onChange(parseInt(e.target.value))
               }
-              className="appearance-none w-5 h-5 rounded-full border-2 border-violet-700 checked:bg-violet-700 checked:border-transparent transition-colors"
+              className="appearance-none w-4 h-4 rounded-full border border-violet-700 checked:bg-violet-700 checked:border-transparent transition-colors"
             />
             <span>{option.label}</span>
           </label>

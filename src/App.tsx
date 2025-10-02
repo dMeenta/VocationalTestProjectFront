@@ -2,14 +2,7 @@ import { useState } from "react";
 import StudentForm from "./components/StudentForm";
 import QuestionStep from "./components/QuestionStep";
 import ResultDisplay from "./components/ResultDisplay";
-import type BackendResponse from "./assets/BackendResponse";
-
-export interface StudentData {
-  name: string;
-  lastName: string;
-  age: number | null;
-  gender: number;
-}
+import type { BackendResponse, StudentData } from "./types/interfaces";
 
 export default function App() {
   const [step, setStep] = useState<"student" | "test" | "result">("student");
@@ -33,7 +26,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center p-6">
       {step === "student" && (
         <StudentForm onNext={handleStartTest} onRestart={restart} />
       )}
